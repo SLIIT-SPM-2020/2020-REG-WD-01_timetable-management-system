@@ -6,12 +6,13 @@
 package WorkingHours;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import util.dbConnect;
+
 
 /**
  *
@@ -21,24 +22,30 @@ public class Delete_working extends javax.swing.JFrame {
 
     private int id;
     private Connection con;
+   
     
-    public Delete_working() {
-        initComponents();
-        this.setLocationRelativeTo(null);
+    public Delete_working() throws ClassNotFoundException, SQLException {
+       initComponents();
+       Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+        
+        String URL = "jdbc:derby:mydatabs;create=true";
+        con = DriverManager.getConnection(URL);
+       
     }
 
-    Delete_working(int id, String noWorkingHours, String wokingDays, String workingTime, String timeSlot) {
+    Delete_working(int id, String noWorkingHours, String wokingDays, String workingTime, String timeSlot) throws ClassNotFoundException, SQLException {
         initComponents();
-        this.setLocationRelativeTo(null);
+        Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
         
-        dbConnect dbc = dbConnect.getDatabaseConnection();
-        con = dbc.getConnection();
+        String URL = "jdbc:derby:mydatabs;create=true";
+        con = DriverManager.getConnection(URL);
+        
+        this.setLocationRelativeTo(null);
         
         this.id = id;
         
-        textNoWorkingHours.setText(noWorkingHours);
-        
-        switch(wokingDays){
+        textNoWorkingHours.setText(noWorkingHours.toString());
+        switch(wokingDays.toString()){
             case "Monday":
                 textwokingDays.setSelectedIndex(1);
                 break;
@@ -63,8 +70,9 @@ public class Delete_working extends javax.swing.JFrame {
             default:
                 textwokingDays.setSelectedIndex(0);
         }
-        textWorkingTime.setText(workingTime);
-        textTimeSlot.setText(timeSlot);
+        textWorkingTime.setText(workingTime.toString());
+        textTimeSlot.setText(timeSlot.toString());
+        
     }
 
    
@@ -158,6 +166,7 @@ public class Delete_working extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel3.setText("Time slot");
 
+        textNoWorkingHours.setText("gfhg");
         textNoWorkingHours.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 textNoWorkingHoursActionPerformed(evt);
@@ -490,7 +499,7 @@ public class Delete_working extends javax.swing.JFrame {
         // TODO add your handling code here:
             try {
 
-            String query = "DELETE from workingHourstable where id = "+this.id;
+            String query = "DELETE from workingHourstable where id = " + this.id;
             System.out.println(query);
             
             Statement st = con.createStatement();
@@ -506,12 +515,27 @@ public class Delete_working extends javax.swing.JFrame {
                 
         } catch (SQLException ex) {
             Logger.getLogger(Update_working.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Delete_working.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btn_deleteActionPerformed
 
     private void nav_WorkingHoursActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nav_WorkingHoursActionPerformed
-        // TODO add your new Example().setVisible(true);
-        new Working().setVisible(true);
+        try {
+            try {
+                // TODO add your new Example().setVisible(true);
+//        new Working().setVisible(true);
+//        this.setVisible(false);
+//        this.setDefaultCloseOperation(this.EXIT_ON_CLOSE); 
+//        this.dispose();
+
+new Working().setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(Delete_working.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Delete_working.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.setVisible(false); 
         this.setDefaultCloseOperation(this.EXIT_ON_CLOSE); 
         this.dispose();
@@ -550,7 +574,13 @@ public class Delete_working extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Delete_working().setVisible(true);
+                try {
+                    new Delete_working().setVisible(true);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(Delete_working.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Delete_working.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

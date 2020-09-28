@@ -7,6 +7,7 @@ package WorkingHours;
 
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
@@ -21,13 +22,14 @@ import util.dbConnect;
 public class Working extends javax.swing.JFrame {
 
     private Connection con;
-    Working_Model Woh;
     
-    public Working() throws ClassNotFoundException {
+    public Working() throws ClassNotFoundException, SQLException {
         initComponents();
-        this.setLocationRelativeTo(null);
-        dbConnect dbc = dbConnect.getDatabaseConnection();
-        con = dbc.getConnection();
+        Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+        
+        String URL = "jdbc:derby:mydatabs;create=true";
+        con = DriverManager.getConnection(URL);
+        Statement stmt = con.createStatement();
     }
 
     /**
@@ -149,7 +151,7 @@ public class Working extends javax.swing.JFrame {
             }
         });
 
-        workingDays.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Choose working day", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" }));
+        workingDays.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" }));
 
         btn_add.setText("ADD");
         btn_add.setFont(new java.awt.Font("Algerian", 1, 18)); // NOI18N
@@ -465,46 +467,83 @@ public class Working extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField5ActionPerformed
 
     private void btn_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_addActionPerformed
-      try {
+      
+       
             // TODO add your handling code here:
             
             if(noWorkingH.getText().equals("") || workingDays.getSelectedIndex() == 0 || workingTime.getText().equals("") || timeSlot.getText().equals("") ) {
                 JOptionPane.showMessageDialog(null, "Please Fill All Fields.");
                 
             }else{
-                String query = "INSERT INTO workingHourstable(noWorkingHours , wokingDays, workingTime, timeSlot) values ('"+noWorkingH.getText()+"','"+workingDays.getSelectedItem()+"','"+workingTime.getText()+"','"+timeSlot.getText()+"')";
+          
 
-                Statement st = con.createStatement();
-                if((st.executeUpdate(query)) == 1){
-                    JOptionPane.showMessageDialog(null, "Working Hours Details Added Successfully");
-                }else{
-                    JOptionPane.showMessageDialog(null, "Working Hours Details Adding Failed");
+
+String query = "INSERT INTO workingHourstable( noWorkingHours , wokingDays, workingTime, timeSlot) values('"+noWorkingH.getText()+"','"+workingDays.getSelectedItem()+"','"+workingTime.getText()+"','"+timeSlot.getText()+"')";
+
+                Statement st;
+                try {
+                    st = con.createStatement();  
+               
+                    st.execute(query);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Working.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                System.out.println("Record inserted successfully");
+                JOptionPane.showMessageDialog(null, "Working Hours Details Added Successfully");
+//                if((st.executeUpdate(query)) == 1){
+//                    JOptionPane.showMessageDialog(null, "Working Hours Details Added Successfully");
+//                }else{
+//                    JOptionPane.showMessageDialog(null, "Working Hours Details Adding Failed");
+//                }
+//            }
+            
+            
             }
-            
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(Working.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
 
     }//GEN-LAST:event_btn_addActionPerformed
 
     private void btn_viewWorkingHoursActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_viewWorkingHoursActionPerformed
-        // TODO add your handling code here:
+        try {
+            try {
+                // TODO add your handling code here:
+                
+//        new View_working().setVisible(true);
+//        this.setVisible(false);
+//        this.setDefaultCloseOperation(this.EXIT_ON_CLOSE); 
+//        this.dispose();
 
-        new View_working().setVisible(true);
+new View_working().setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(Working.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Working.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.setVisible(false); 
         this.setDefaultCloseOperation(this.EXIT_ON_CLOSE); 
         this.dispose();
     }//GEN-LAST:event_btn_viewWorkingHoursActionPerformed
 
     private void nav_WorkingHoursActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nav_WorkingHoursActionPerformed
-        // TODO add your handling code here:
-        new View_working().setVisible(true);
+        try {
+            try {
+                // TODO add your handling code here:
+                new View_working().setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(Working.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Working.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.setVisible(false); 
         this.setDefaultCloseOperation(this.EXIT_ON_CLOSE); 
         this.dispose();
+        
+//        new View_working().setVisible(true);
+//        this.setVisible(false); 
+//        this.setDefaultCloseOperation(this.EXIT_ON_CLOSE); 
+//        this.dispose();
         
     }//GEN-LAST:event_nav_WorkingHoursActionPerformed
 
@@ -542,7 +581,11 @@ public class Working extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    new Working().setVisible(true);
+                    try {
+                        new Working().setVisible(true);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Working.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 } catch (ClassNotFoundException ex) {
                     Logger.getLogger(Working.class.getName()).log(Level.SEVERE, null, ex);
                 }

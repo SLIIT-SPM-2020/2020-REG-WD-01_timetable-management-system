@@ -17,8 +17,7 @@ public class Working_Model {
     private String workingTime;
     private String timeSlot;
     
-     public Working_Model(int id, String noWorkingHours, String wokingDays, String workingTime, String timeSlot) {
-         
+     public Working_Model(String noWorkingHours, String wokingDays, String workingTime, String timeSlot, int id) {
         this.id = id;
         this.noWorkingHours = noWorkingHours;
         this.wokingDays = wokingDays;
@@ -26,20 +25,10 @@ public class Working_Model {
         this.timeSlot = timeSlot;
     }
 
-    /**
-     * @return the id
-     */
-    public int getId() {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(int id) {
-        this.id = id;
-    }
-
+     public int getId(){
+         return id;
+     }
+     
     /**
      * @return the noWorkingHours
      */

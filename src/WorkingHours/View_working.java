@@ -5,10 +5,15 @@
  */
 package WorkingHours;
 
+import static WorkingHours.TablesConst.con;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static javafx.util.Duration.hours;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -21,14 +26,16 @@ import util.dbConnect;
 public class View_working extends javax.swing.JFrame {
 
       private Connection con;
+      private Statement stmt;
       Working_Model workinghours;
     
-    public View_working() {
+    public View_working() throws ClassNotFoundException, SQLException {
         initComponents();
-        this.setLocationRelativeTo(null);
+                    
+        Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
         
-        dbConnect dbc = dbConnect.getDatabaseConnection();
-        con = dbc.getConnection();
+        String URL = "jdbc:derby:mydatabs;create=true";
+        con = DriverManager.getConnection(URL);
         
         getAllworkingHours();
     }
@@ -58,24 +65,24 @@ public class View_working extends javax.swing.JFrame {
             
             while(rs.next()){
                 
-                workinghours = new Working_Model(rs.getInt("id"),rs.getString("noWorkingHours"), rs.getString("wokingDays"),rs.getString("workingTime"),rs.getString("timeSlot"));    
+                workinghours = new Working_Model(rs.getString("noWorkingHours"), rs.getString("wokingDays"),rs.getString("workingTime"),rs.getString("timeSlot"), rs.getInt("id"));    
                 hours.add(workinghours); 
             }
             
             for(int i= 0; i <hours.size() ; i++)
             {
+                row[4] = hours.get(i).getId();
                 row[0] = hours.get(i).getNoWorkingHours();
                 row[1] = hours.get(i).getWokingDays();
                 row[2] = hours.get(i).getWorkingTime();
                 row[3] = hours.get(i).getTimeSlot();
-                row[4] = hours.get(i).getId();
+              
 
                 model.addRow(row);
                 
             }
             
-            workingHours_table.removeColumn(workingHours_table.getColumnModel().getColumn(4));
- 
+           
             
         }catch (Exception ex){
             ex.printStackTrace();
@@ -476,7 +483,6 @@ public class View_working extends javax.swing.JFrame {
 
     private void btn_workingHours_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_workingHours_updateActionPerformed
         // TODO add your handling code here:
-        System.out.println(workinghours.getId());
         if(workingHours_table.getSelectedRowCount()
                 == 0){
             JOptionPane.showMessageDialog(null, "Please Select a Row to Update");
@@ -487,7 +493,20 @@ public class View_working extends javax.swing.JFrame {
             String workingTime = workingHours_table.getModel().getValueAt(workingHours_table.getSelectedRow(),2).toString();
             String timeSlot = workingHours_table.getModel().getValueAt(workingHours_table.getSelectedRow(),3).toString();
             
-            new Update_working(id, noWorkingHours, wokingDays, workingTime,timeSlot).setVisible(true);
+            try {
+                try {
+                    //            new Update_working(id, noWorkingHours, wokingDays, workingTime,timeSlot).setVisible(true);
+//            this.setVisible(false);
+//            this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+//            this.dispose();
+
+new Update_working(id, noWorkingHours, wokingDays, workingTime,timeSlot).setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(View_working.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(View_working.class.getName()).log(Level.SEVERE, null, ex);
+            }
             this.setVisible(false); 
             this.setDefaultCloseOperation(this.EXIT_ON_CLOSE); 
             this.dispose();
@@ -498,21 +517,34 @@ public class View_working extends javax.swing.JFrame {
 
     private void btn_workingHours_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_workingHours_deleteActionPerformed
         // TODO add your handling code here:
+        
              if(workingHours_table.getSelectedRowCount() == 0){
             JOptionPane.showMessageDialog(null, "Please Select a Row to Delete");
         }else{
             int id = Integer.parseInt(workingHours_table.getModel().getValueAt(workingHours_table.getSelectedRow(),4).toString());
+            
             String noWorkingHours = workingHours_table.getModel().getValueAt(workingHours_table.getSelectedRow(),0).toString();
             String wokingDays = workingHours_table.getModel().getValueAt(workingHours_table.getSelectedRow(),1).toString();
             String workingTime = workingHours_table.getModel().getValueAt(workingHours_table.getSelectedRow(),2).toString();
             String timeSlot = workingHours_table.getModel().getValueAt(workingHours_table.getSelectedRow(),3).toString();
             
-            
-            new Delete_working(id, noWorkingHours, wokingDays, workingTime,timeSlot).setVisible(true);
+        
+                 try {
+                try {
+                    new Delete_working(id, noWorkingHours, wokingDays, workingTime,timeSlot).setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(View_working.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+                 } catch (ClassNotFoundException ex) {
+                     Logger.getLogger(View_working.class.getName()).log(Level.SEVERE, null, ex);
+                 }
             this.setVisible(false); 
             this.setDefaultCloseOperation(this.EXIT_ON_CLOSE); 
             this.dispose();
              }
+             
+       
     }//GEN-LAST:event_btn_workingHours_deleteActionPerformed
 
     private void workingHours_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_workingHours_tableMouseClicked
@@ -521,8 +553,19 @@ public class View_working extends javax.swing.JFrame {
     }//GEN-LAST:event_workingHours_tableMouseClicked
 
     private void nav_WorkingHoursActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nav_WorkingHoursActionPerformed
-        // TODO add your handling code here:
-        new Working().setVisible(true);
+          try {
+              // TODO add your handling code here:
+//        new Working().setVisible(true);
+//        this.setVisible(false);
+//        this.setDefaultCloseOperation(this.EXIT_ON_CLOSE); 
+//        this.dispose();
+
+new Working().setVisible(true);
+          } catch (ClassNotFoundException ex) {
+              Logger.getLogger(View_working.class.getName()).log(Level.SEVERE, null, ex);
+          } catch (SQLException ex) {
+              Logger.getLogger(View_working.class.getName()).log(Level.SEVERE, null, ex);
+          }
         this.setVisible(false); 
         this.setDefaultCloseOperation(this.EXIT_ON_CLOSE); 
         this.dispose();
@@ -560,7 +603,13 @@ public class View_working extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new View_working().setVisible(true);
+                try {
+                    new View_working().setVisible(true);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(View_working.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(View_working.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

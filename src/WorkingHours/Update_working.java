@@ -6,6 +6,7 @@
 package WorkingHours;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
@@ -23,18 +24,23 @@ public class Update_working extends javax.swing.JFrame {
     private int id;
     private Connection con;
     
-    public Update_working() {
+    public Update_working() throws ClassNotFoundException, SQLException {
         initComponents();
-        this.setLocationRelativeTo(null);
+       Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+        
+        String URL = "jdbc:derby:mydatabs;create=true";
+        con = DriverManager.getConnection(URL);
     }
 
 
-    Update_working(int id, String noWorkingHours, String wokingDays, String workingTime, String timeSlot) {
+    Update_working(int id, String noWorkingHours, String wokingDays, String workingTime, String timeSlot) throws ClassNotFoundException, SQLException {
         initComponents();
-        this.setLocationRelativeTo(null);
+        Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
         
-        dbConnect dbc = dbConnect.getDatabaseConnection();
-        con = dbc.getConnection();
+        String URL = "jdbc:derby:mydatabs;create=true";
+        con = DriverManager.getConnection(URL);
+        
+        this.setLocationRelativeTo(null);
         
         this.id = id;
         
@@ -504,9 +510,20 @@ public class Update_working extends javax.swing.JFrame {
     }//GEN-LAST:event_textwokingDaysActionPerformed
 
     private void nav_WorkingHoursActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nav_WorkingHoursActionPerformed
-        // TODO add your handling code here:
-        
-        new Working().setVisible(true);
+        try {
+            // TODO add your handling code here:
+            
+//        new Working().setVisible(true);
+//        this.setVisible(false);
+//        this.setDefaultCloseOperation(this.EXIT_ON_CLOSE); 
+//        this.dispose();
+
+new Working().setVisible(true);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Update_working.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Update_working.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.setVisible(false); 
         this.setDefaultCloseOperation(this.EXIT_ON_CLOSE); 
         this.dispose();
@@ -533,6 +550,8 @@ public class Update_working extends javax.swing.JFrame {
             }
                 
         } catch (SQLException ex) {
+            Logger.getLogger(Update_working.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
             Logger.getLogger(Update_working.class.getName()).log(Level.SEVERE, null, ex);
         }
                                            
@@ -570,7 +589,13 @@ public class Update_working extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Update_working().setVisible(true);
+                try {
+                    new Update_working().setVisible(true);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(Update_working.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Update_working.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

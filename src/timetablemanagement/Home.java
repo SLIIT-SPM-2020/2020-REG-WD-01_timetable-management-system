@@ -7,6 +7,7 @@ package timetablemanagement;
 
 
 import WorkingHours.Working;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -282,9 +283,13 @@ public class Home extends javax.swing.JFrame {
 
     private void workingHoursActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_workingHoursActionPerformed
         try {
-            // TODO add your handling code here:
+            try {
+                // TODO add your handling code here:
 
-            new WorkingHours.Working().setVisible(true);
+                new WorkingHours.Working().setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
         }

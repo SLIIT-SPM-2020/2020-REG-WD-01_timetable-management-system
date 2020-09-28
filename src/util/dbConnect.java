@@ -18,36 +18,21 @@ import java.util.logging.Logger;
  */
 public class dbConnect {
 
-    private Connection con;
+    private static Connection con;
     private static dbConnect dbc;
 
-    private dbConnect() throws ClassNotFoundException {
+    private dbConnect() throws ClassNotFoundException, SQLException {
         //DB Driver
-        String db_host = "jdbc:mysql://localhost:3306/logindb";
-        String db_username = "root";
-        String db_password = "";
-        con = null;
-
-        try {
-            Class.forName("java.sql.Driver");
-            con = DriverManager.getConnection(db_host, db_username, db_password);
-
-        } catch (SQLException ex) {
-            System.out.println(ex.toString());
-        }
-    }
-
-
-
-public static dbConnect getDatabaseConnection() throws ClassNotFoundException{
+        Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
         
-        if(dbc == null ){
-            dbc = new dbConnect();
-        }
-        return dbc;
+        String URL = "jdbc:derby:mydatabs;create=true";
+        con = DriverManager.getConnection(URL);
+        Statement stmt = con.createStatement();
+        
+        
     }
     
-    public Connection getConnection(){
+    public static Connection getConnection(){
         return con;
     }
     
