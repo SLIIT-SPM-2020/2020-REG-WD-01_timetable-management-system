@@ -639,6 +639,7 @@ public class AddSession extends javax.swing.JFrame {
         String sessionString = lecturers + "\n" + subject_name + " (" + subject_code + ")" + "\n" 
                 + tag + "\n" + student_group_id
                 + "\n" + number_of_students + "(" + duration + ")"; 
+        System.out.println("Session String : \n" + sessionString);
         
     }//GEN-LAST:event_btn_create_sessionActionPerformed
 
