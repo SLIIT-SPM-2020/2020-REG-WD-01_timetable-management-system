@@ -13,7 +13,6 @@ import java.util.ArrayList;
  */
 public class Session {
     static ArrayList<String> lecturers_arrl;
-    public static ArrayList<String> session_string_arr = new ArrayList<String>(); 
     String lecturers, tag, subject_name, subject_code, student_group_id;
     int duration, number_of_students;
 
@@ -24,8 +23,7 @@ public class Session {
         this.subject_code = subject_code;
         this.student_group_id = student_group_id;
         this.duration = duration;
-        this.number_of_students = number_of_students;
-        
+        this.number_of_students = number_of_students;   
     }
 
     public String getLecturers() {
