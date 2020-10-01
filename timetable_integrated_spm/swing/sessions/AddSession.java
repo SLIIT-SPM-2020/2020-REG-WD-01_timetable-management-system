@@ -640,8 +640,6 @@ public class AddSession extends javax.swing.JFrame {
                 + tag + "\n" + student_group_id
                 + "\n" + number_of_students + "(" + duration + ")"; 
         
-        Session.session_string_arr.add(sessionString);
-        System.out.println("Session String ArrayList : " + Session.session_string_arr.size());
     }//GEN-LAST:event_btn_create_sessionActionPerformed
 
     /**
@@ -752,9 +750,6 @@ public class AddSession extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-       
-        
-        session_string.add(session_val);
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
